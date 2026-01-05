@@ -59,7 +59,7 @@ Then I recheck with:
 DELETE THE BOOK INSTANCE
 
 Then I deleted the created instance with;
-
+    >>>  from bookshelf.models import Book
     >>> book = Book.objects.get(id=1)
     >>> book.delete()
     
