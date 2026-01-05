@@ -1,9 +1,14 @@
 Now, I update my created Book instance with:
 
+Now, I update my created Book instance with:
+
     >>> book = Book.objects.get(id=1)
     >>> book.title = "Nineteen Eighty-Four"
     >>> book.save()
-    >>> book = Book.objects.all().values()
+
+Then I recheck with:
+
+    >>> book =  Book.objects.get(id=1)
     >>> print(book)
 
     Output:
