@@ -13,7 +13,7 @@ Then, I go to my gitbash and run:
 
 Then I check my database with:
         >>> from bookshelf.models import Book
-        >>> x = Book.objects.all()
+        >>> book = Book.objects.all()
         >>> print(x)
         <QuerySet []>
 
@@ -24,7 +24,7 @@ Then I check my database with:
 CREATION OF A BOOK INSTANCE
 
 Now, I create a Book instance with the title “1984”, author “George Orwell”, and publication year 1949 with:
-        >>> = Book(title="1984", author="George Orwell", publication_year=1949)
+        >>> book = Book.objects.create(title="1984", author="George Orwell", publication_year=1949)
         >>> x.save()
 
 
@@ -32,7 +32,7 @@ RETRIEVE THE BOOK CREATED
 
 After I create a Book instance, then I go ahead and retrive data created with:
 
-    >>> x = Book.objects.all().values()
+    >>> book = Book.objects.all().values()
     >>> print(x)
 
     Output:

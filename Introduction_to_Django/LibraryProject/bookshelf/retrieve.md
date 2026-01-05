@@ -1,6 +1,6 @@
 After I create a Book instance, then I go ahead and retrive data created with:
 
-    >>> x = Book.objects.all().values()
+    >>> book = Book.objects.all().values()
     >>> print(x)
 
     Output:
