@@ -60,7 +60,9 @@ DELETE THE BOOK INSTANCE
 
 Then I deleted the created instance with;
 
-    >>> Book.objects.get(id=1).delete()
+    >>> book = Book.objects.get(id=1)
+    >>> book.delete()
+    
     Output:
     (1, {'bookshelf.Book': 1})
     
