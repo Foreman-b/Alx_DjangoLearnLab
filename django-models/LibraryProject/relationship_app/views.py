@@ -6,6 +6,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import user_passes_test
 
 
 # Let get all list of books
@@ -61,3 +62,30 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return render(request, 'relationship_app/logout.html')
+
+
+def is_admin(user):
+    return user.is_authenticated and user.profile.role == 'Admin'
+
+def is_librarian(user):
+    return user.is_authenticated and user.profile.role == 'Librarian'
+
+def is_member(user):
+    return user.is_authenticated and user.profile.role == 'Member'
+
+
+
+# 1. Admin View
+@user_passes_test(is_admin)
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html', {'message': 'Welcome, Admin!'})
+
+# 2. Librarian View
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html', {'message': 'Welcome, Librarian!'})
+
+# 3. Member View
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html', {'message': 'Welcome, Member!'})
