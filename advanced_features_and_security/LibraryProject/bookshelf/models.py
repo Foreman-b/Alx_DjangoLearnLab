@@ -71,7 +71,7 @@ def save_user_profile(sender, instance, **kwargs):
     except UserProfile.DoesNotExist:
         UserProfile.objects.create(user=instance)
 
-class CustomUserAdmin(UserAdmin):
+class CustomUserAdmin(AbstractUser):
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('date_of_birth', 'profile_photo')}),
     )
