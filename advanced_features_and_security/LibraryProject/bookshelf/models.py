@@ -1,87 +1,19 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.contrib.auth.models import BaseUserManager, AbstractUser
-from django.conf import settings
-from .models import User
-from django.contrib.auth.admin import UserAdmin
 
 
 
-class Author(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
+    author = models.CharField(max_length=100)
+    publication_year = models.IntegerField()
 
-    class Meta:
-        permissions = [
-            ("can_add_book", "Add Book"),
-            ("can_change_book", "Change Book"),
-            ("can_delete_book", "Detele Book")
-        ]
-    def __str__(self):
-        return self.title
-
-
-
-class Library(models.Model):
-    name = models.CharField(max_length=200)
-    books = models.ManyToManyField(Book, related_name="libraries")
 
     def __str__(self):
-        return self.name
-
-class Librarian(models.Model):
-    name = models.CharField(max_length=200)
-    library = models.OneToOneField(Library, on_delete=models.CASCADE, related_name="librarian")
-
-    def __str__(self):
-        return self.name
-
-
-class UserProfile(models.Model):
-
-    ROLE_CHOICES = [
-        ('Admin', 'Admin'),
-        ('Librarian', 'Librarian'),
-        ('Member', 'Member'),
-    ]
-
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
-
-    def __str__(self):
-        return f"{self.user.username} - {self.role}"
+        return f"{self.title} by {self.author} ({self.publication_year})"
     
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.get_or_create(user=instance)
-
-# Signal to save the UserProfile whenever the User object is saved@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    try:
-        instance.profile.save()
-    except UserProfile.DoesNotExist:
-        UserProfile.objects.create(user=instance)
-
-class CustomUserAdmin(AbstractUser):
-    fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('date_of_birth', 'profile_photo')}),
-    )
-
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('date_of_birth', 'profile_photo')}),
-    )
-
-    # Now let display controls the columns shows in the user list view
-    list_display = ['username', 'email', 'date_of_birth', 'is_staff']
 
 class UserManager(BaseUserManager):
     # Let create and save User with given email, DOB and password
@@ -104,7 +36,7 @@ class UserManager(BaseUserManager):
 
 
 
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to='upload/profile_photo', null=True, blank=True)
 
