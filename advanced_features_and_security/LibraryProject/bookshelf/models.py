@@ -42,4 +42,4 @@ class CustomUser(AbstractUser):
 
     REQUIRED_FIELDS = ['date_of_birth', 'email']
 
-    objects = UserManager()
+    objects = CustomUserManager()
