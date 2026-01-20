@@ -3,6 +3,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.conf import settings
+from .models import User
+from django.contrib.auth.admin import UserAdmin
 
 
 
@@ -69,6 +71,17 @@ def save_user_profile(sender, instance, **kwargs):
     except UserProfile.DoesNotExist:
         UserProfile.objects.create(user=instance)
 
+class CustomUserAdmin(UserAdmin):
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('date_of_birth', 'profile_photo')}),
+    )
+
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (None, {'fields': ('date_of_birth', 'profile_photo')}),
+    )
+
+    # Now let display controls the columns shows in the user list view
+    list_display = ['username', 'email', 'date_of_birth', 'is_staff']
 
 class UserManager(BaseUserManager):
     # Let create and save User with given email, DOB and password
