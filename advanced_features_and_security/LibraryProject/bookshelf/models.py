@@ -15,7 +15,7 @@ class Book(models.Model):
     
 
 
-class UserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     # Let create and save User with given email, DOB and password
     def create_user(self, username, email, date_of_birth, password=None, **extra_fields):
         if not email:
