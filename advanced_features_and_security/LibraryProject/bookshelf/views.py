@@ -8,6 +8,8 @@ def book_list(request):
     books = Book.objects.all()
     
     return render(request, 'relationship_app/list_books.html', {'books': books})
+
+
 @permission_required('bookshel.can_view', raise_exception=True)
 def can_view_book(request):
     books = Book.objects.all()
