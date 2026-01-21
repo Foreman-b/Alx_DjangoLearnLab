@@ -4,7 +4,7 @@ from .models import Book
 
 
 # Let get all list of books
-def list_books(request):
+def book_list(request):
     books = Book.objects.all()
     
     return render(request, 'relationship_app/list_books.html', {'books': books})
@@ -21,7 +21,7 @@ def can_create_book(request):
         author_id = request.POST.get('author')
         
         Book.objects.create(title=title, author_id=author_id)
-        return redirect('list_books')
+        return redirect('book_list')
     return render(request, 'bookshelf/can_create_book.html')
 
 
@@ -32,7 +32,7 @@ def can_edit_book(request, pk):
     if request.method == 'POST':
         books.title = request.POST.get('title')
         books.save()
-        return redirect('list_books')
+        return redirect('book_list')
     return render(request, 'bookshelf/can_edit_book.html', {'books': books})
 
 
@@ -41,7 +41,7 @@ def can_delete_book(request, pk):
     books = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
         books.delete()
-        return redirect('list_books')
+        return redirect('book_list')
         #Let get the request to show confirmation page
     return render(request, 'bookshelf/can_delete_book.html', {'books': books})
 
