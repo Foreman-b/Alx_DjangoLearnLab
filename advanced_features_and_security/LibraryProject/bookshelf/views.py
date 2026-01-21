@@ -3,7 +3,11 @@ from django.contrib.auth.decorators import permission_required
 from .models import Book
 
 
-
+# Let get all list of books
+def list_books(request):
+    books = Book.objects.all()
+    
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 @permission_required('bookshel.can_view', raise_exception=True)
 def can_view_book(request):
     books = Book.objects.all()
@@ -17,7 +21,7 @@ def can_create_book(request):
         author_id = request.POST.get('author')
         
         Book.objects.create(title=title, author_id=author_id)
-        return redirect('can_view_book')
+        return redirect('list_books')
     return render(request, 'bookshelf/can_create_book.html')
 
 
@@ -28,7 +32,7 @@ def can_edit_book(request, pk):
     if request.method == 'POST':
         books.title = request.POST.get('title')
         books.save()
-        return redirect('can_view_book')
+        return redirect('list_books')
     return render(request, 'bookshelf/can_edit_book.html', {'books': books})
 
 
@@ -37,7 +41,7 @@ def can_delete_book(request, pk):
     books = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
         books.delete()
-        return redirect('can_view_book')
+        return redirect('list_books')
         #Let get the request to show confirmation page
     return render(request, 'bookshelf/can_delete_book.html', {'books': books})
 
