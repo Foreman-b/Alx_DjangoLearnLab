@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from .views import can_view_book, can_create_book, can_edit_book, can_delete_book
 from django.conf import settings
 from django.conf.urls.static import static
 
