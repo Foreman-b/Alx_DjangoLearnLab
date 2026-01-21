@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from .forms import ExampleForm
 
 
 # Let get all list of books
 def book_list(request):
     books = Book.objects.all()
     
-    return render(request, 'relationship_app/list_books.html', {'books': books})
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 
 
 @permission_required('bookshel.can_view', raise_exception=True)
@@ -48,3 +49,15 @@ def can_delete_book(request, pk):
     return render(request, 'bookshelf/can_delete_book.html', {'books': books})
 
 
+def form_example(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            return render(request, 'relationship_app/list_books.html', {'form': form})
+    
+    else:
+        form = ExampleForm()
+        
+    return render(request, 'relationship_app/list_books.html', {'form': form})
