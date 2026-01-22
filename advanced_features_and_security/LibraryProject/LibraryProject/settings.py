@@ -44,7 +44,7 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['https://bronson-unpeeled-stainably.ngrok-free.dev', 'bronson-unpeeled-stainably.ngrok-free.dev', '127.0.0.1', 'localhost']
 
 
 # Application definition

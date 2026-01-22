@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
-from .models import Book
+from .models import Book, Author
 from .forms import ExampleForm
 
 
@@ -21,7 +21,7 @@ def can_view_book(request):
 def can_create_book(request):
     if request.method == 'POST':
         title = request.POST.get('title')
-        author_id = request.POST.get('author')
+        author_id = request.POST.get('author_id')
         
         Book.objects.create(title=title, author_id=author_id)
         return redirect('book_list')
@@ -61,3 +61,14 @@ def form_example(request):
         form = ExampleForm()
         
     return render(request, 'relationship_app/list_books.html', {'form': form})
+
+
+# Let create author
+@permission_required('bookshelf.create_author', raise_exception=True)
+def create_author(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        
+        Author.objects.create(name=name)
+        return redirect('book_list')
+    return render(request, 'bookshelf/create_author.html')
