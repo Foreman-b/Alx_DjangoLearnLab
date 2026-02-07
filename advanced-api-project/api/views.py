@@ -3,6 +3,7 @@ from .serializers import BookSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework import filters
+from django_filters import rest_framework
 
 # Let create ListView to allow read only for everyone
 class BookListView(generics.ListAPIView):
