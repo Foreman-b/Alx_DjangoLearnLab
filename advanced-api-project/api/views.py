@@ -3,7 +3,7 @@ from .serializers import BookSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework import filters
-from django_filters import rest_framework
+# from django_filters import rest_framework
 
 # Let create ListView to allow read only for everyone
 class BookListView(generics.ListAPIView):
@@ -11,13 +11,8 @@ class BookListView(generics.ListAPIView):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['title', 'author']
+    search_fields = ['title', 'author__name',]
     ordering_fields = ['title', 'publication_year']
-
-    def get_queryset(self):
-    # This will return list of books for current authenticated user
-        user = self.request.user
-        return Book.objects.filter(books=user)
 
 
 # Let handle our DetailView for readly for everyone

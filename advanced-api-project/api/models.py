@@ -19,7 +19,7 @@ class Book(models.Model):
     this is 'Many' side of the relationship.
     """
     title = models.CharField(max_length=225)
-    publication_year = models.DateTimeField()
+    publication_year = models.DateField()
     # related name will allows us to access an author's books
     author = models.ForeignKey(Author, related_name='books', on_delete=models.CASCADE)
 
