@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User
 
 
 class Post(models.Model):
@@ -8,11 +8,7 @@ class Post(models.Model):
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     #Let link to Django User model
-    author = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.CASCADE,
-        related_name='posts'
-        )
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
 
     def __str__(self):
         # String representation of the Post object in Admin
