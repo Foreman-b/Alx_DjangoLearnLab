@@ -12,9 +12,11 @@
         <nav>
             <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'posts' %}">Blog Posts</a></li>
+                {% comment %} <li><a href="{% url 'posts' %}">Blog Posts</a></li> {% endcomment %}
                 <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+
             </ul>
         </nav>
     </header>
@@ -24,7 +26,8 @@
         <!-- Page-specific content goes here -->
         {% endblock %}
     </div>
-
+    <br> <br> <br> <br><br> <br><br> <br><br> <br><br> <br>
+    <br> <br><br> <br><br> <br><br> <br><br> <br><br> <br>
     <footer>
         <p>&copy; 2026 Django Blog</p>
     </footer>
