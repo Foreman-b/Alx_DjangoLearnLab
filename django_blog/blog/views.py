@@ -79,8 +79,9 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ["title", "content"]
     template_name = "blog/post_form.html"
+    success_url = reverse_lazy('posts')
 
-    def test_update(self):
+    def test_func(self):
         post = self.get_object()
         return post.author == self.request.user
     
@@ -88,8 +89,8 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = "blog/post_delete.html"
-    success_url = reverse_lazy("post-list")
+    success_url = reverse_lazy("posts")
 
-    def test_del(self):
+    def test_func(self):
         post = self.get_object()
         return post.author == self.request.user
