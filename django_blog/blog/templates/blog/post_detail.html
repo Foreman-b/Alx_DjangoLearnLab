@@ -38,4 +38,10 @@
   <p><a href="{% url 'login' %}">Login</a> to comment.</p>
 {% endif %}
 
+<div class="tags-section">
+    {% for tag in post.tags.all %}
+        <a href="{% url 'posts-by-tag' tag.name %}">#{{ tag.name }}</a>
+    {% endfor %}
+</div>
+
 {% endblock %}
