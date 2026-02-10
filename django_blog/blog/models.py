@@ -1,13 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-
-class Tag(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.name
-    
+from taggit.managers import TaggableManager
 
 class Post(models.Model):
     # This is a model representing blog post 
@@ -16,7 +9,7 @@ class Post(models.Model):
     published_date = models.DateTimeField(auto_now_add=True)
     #Let link to Django User model
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
-    tags = models.ManyToManyField(Tag, related_name='posts', blank=True)
+    tags = TaggableManager()
 
     def __str__(self):
         # String representation of the Post object in Admin
