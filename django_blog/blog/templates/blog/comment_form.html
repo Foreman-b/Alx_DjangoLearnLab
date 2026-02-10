@@ -1,17 +1,6 @@
-{% extends "blog/base.html" %}
-
-{% block content%}
-<h2> {{ object.title }}</h2>
-<p> {{ object.content }}</p>
-<p> Author: {{ object.author }} </p>
-
-{% if user == object.author %}
-<a href="{% url 'post-edit' object.pk %}"> Edit </a>
-<a href="{% url 'post-delete' object.pk %}"> Delete </a>
-{% endif %}
 
 <h3> Comments </h3>
-{% for comment in post.comments.all %}
+{% for comment in comments.all %}
 <div>
     <p> <strong> {{ comment.author}} </strong></p>
     <p> {{ comment.content }}</p>
@@ -37,5 +26,3 @@
 {% else %}
   <p><a href="{% url 'login' %}">Login</a> to comment.</p>
 {% endif %}
-
-{% endblock %}
