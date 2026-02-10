@@ -9,6 +9,7 @@ from django.views.generic import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
+from django.db.models import Q
 
 
 
@@ -146,3 +147,25 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     form =  CommentForm
     return render(request, 'post_detail.html', {'post': post, 'form': form})
+
+
+def search(request):
+    query = request.GET.get('q')
+    results = Post.objects.all()
+
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) | 
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    
+    return render(request, 'blog/search_results.html', {'results':results, 'query':query})
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html' # Reuse your main list template
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__name=self.kwargs.get('tag_name'))
