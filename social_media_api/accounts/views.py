@@ -20,7 +20,7 @@ class RegisterView(generics.CreateAPIView):
         user = serializer.save()
 
         # Let create a token for new user here
-        token, created = Token.objects.get_or_create(user=user)
+        token = Token.objects.get(user=user)
 
         return Response({
             "user": UserSerializer(user).data,
@@ -35,7 +35,7 @@ class LoginView(ObtainAuthToken):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
+        token = Token.objects.get(user=user)
 
         return Response({
             'token': token.key,
