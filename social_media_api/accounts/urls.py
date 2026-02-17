@@ -1,1 +1,10 @@
-from django.urls import path
+from django.urls import path, include
+from .views import LoginView, RegisterView, UserProfileView
+from rest_framework.authtoken import views
+
+urlpatterns = [
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('profile/', UserProfileView.as_view(), name='profile'),
+]
+
