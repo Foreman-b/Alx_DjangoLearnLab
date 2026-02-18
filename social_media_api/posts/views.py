@@ -1,8 +1,10 @@
-from rest_framework import viewsets, permissions, filters, generics
-from .serializers import PostSerializer, CommentSerializer
-from .models import Post, Comment
+from rest_framework import viewsets, permissions, filters, generics, status
+from rest_framework.response import Response
+from .serializers import PostSerializer, CommentSerializer, LikeSerializer
+from .models import Post, Comment, Like
 from .permissions import IsAuthorOrReadOnly
 from drf_spectacular.utils import extend_schema, OpenApiExample
+from django.shortcuts import get_object_or_404
 
 
 
@@ -75,3 +77,38 @@ class UserFeedView(generics.ListAPIView):
         # Now let filter the feed where the author is in the following_user lists, ordered by "-created_at" descending order
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
 
+
+class LikePostView(generics.GenericAPIView):
+    serializer_class = LikeSerializer
+    permissions_classes = [permissions.IsAuthenticated]
+
+    def post(sef, request, pk):
+        # Let get the post
+        post = generics.get_object_or_404(Post, pk=pk)
+
+        # Let user get_or_create to prevent duplicate likes
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if not created:
+            return Response({"detail": "You already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": "Post liked successfully."}, status=status.HTTP_201_CREATED)
+    
+
+class UnlikePostView(generics.GenericAPIView):
+    serializer_class = LikeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+    def post(self, request, pk):
+        # Let get the post (pk comes from the URL)
+        post = get_object_or_404(Post, pk=pk)
+
+        # Let find the specific like object
+        like_queryset = Like.objects.filter(user=request.user, post=post)
+
+        if like_queryset.exists():
+            # Delete the like
+            like_queryset.delete()
+            return Response({"detail": "Post unliked."}, status=status.HTTP_200_OK)
+        else:
+             return Response({"detail": "You have not like this post."}, status=status.HTTP_400_BAD_REQUEST)
