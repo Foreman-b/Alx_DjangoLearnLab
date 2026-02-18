@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, filters
+from rest_framework import viewsets, permissions, filters, generics
 from .serializers import PostSerializer, CommentSerializer
 from .models import Post, Comment
 from .permissions import IsAuthorOrReadOnly
@@ -58,4 +58,20 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+class UserFeedView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+    def get_queryset(self):
+        # Let identify the current logged-in user
+        user = self.request.user
+
+        # And let get users that current user follows
+        following_users = user.following.all()
+
+        # Now let filter the feed where the author is in the following_user lists, ordered by "-created_at" descending order
+        return Post.objects.filter(author__in=following_users).order_some_by('-created_at')
 
