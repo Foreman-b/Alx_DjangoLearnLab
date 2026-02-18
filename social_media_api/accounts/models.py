@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 # from django.settings import User
 
 
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     bio = models.TextField()
     profile_picture = models.ImageField(upload_to='uploads/profile_picture/')
     following = models.ManyToManyField(
