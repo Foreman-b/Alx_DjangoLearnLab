@@ -1,9 +1,10 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -12,9 +13,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-dl5-m-*dqii8!^&3)7m!s@e7%#4oqab8q&zz4&tfps-ghseh^d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "bronson-unpeeled-stainably.ngrok-free.dev", "https://bronson-unpeeled-stainably.ngrok-free.dev"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://bronson-unpeeled-stainably.ngrok-free.dev",  "http://localhost", "http://127.0.0.1",
+]
 
 
 # Application definition
@@ -69,8 +74,15 @@ WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('RD_NAME'),
+        'USER': os.getenv('RD_USERNAME'),
+        'PASSWORD': os.getenv('RD_PASSWORD'),
+        'HOST': os.getenv('RD_HOST'),
+        'PORT': os.getenv('RD_PORT'),
+        
     }
 }
 
